@@ -7,6 +7,18 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+// this class is a pipeline thread for running meditation sequences
+// the messages hold BreathSequence instances
+// which run bells after delays given by the breath time values (inhale, exhale, holds)
+// when the bell/breath sequence completes, another should begin if there is one
+// problem is, it needs to wait before continuing...
+// we could add a timers that waits the total of the breathsequence values before
+// finishing? Or we could run it in a separate thread and sleep this one for
+// the total breathsequence values...
+// this service should do all it's work in a separate class, a HandlerThread implementation
+// that's where the media player should be.
+
+// make this a singleton
 public class BreathingBellsService extends Service {
     MediaPlayer mediaPlayer;
 
@@ -22,6 +34,7 @@ public class BreathingBellsService extends Service {
 
     @Override
     public void onCreate() {
+        // create thread to execute music playing on
         super.onCreate();
         mediaPlayer = MediaPlayer.create(this, R.raw.synthetic_bell_sound);
         mediaPlayer.setLooping(true); // Set looping
@@ -49,6 +62,8 @@ public class BreathingBellsService extends Service {
     @Override
     public void onLowMemory() {
     }
+
+
 
 
 }

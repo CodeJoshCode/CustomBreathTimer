@@ -31,22 +31,25 @@ public class MainActivity extends AppCompatActivity {
         inhaleHoldSlider = findViewById(R.id.inhale_hold_slider);
         exhaleSlider = findViewById(R.id.exhale_slider);
         exhaleHoldSlider = findViewById(R.id.exhale_hold_slider);
+        Intent breathingIntent = new Intent(getApplicationContext(), BreathingBellsService.class);
+        startService(breathingIntent);
 
         // TODO: create intent, start service to play bell audio at intervals
         // Todo: add animation to button press
         // actually for now lets just start the service for breathing here on this activity
+        // actually, we need to run this on our pipeline thread
         breathActivityButton.setOnClickListener(view -> {
             // add values from sliders to intent
-            Intent breathingIntent = new Intent(getApplicationContext(), BreathingBellsService.class);
+            Intent breathSequenceIntent = new Intent(getApplicationContext(), BreathingBellsService.class);
             // TODO: change this to add BreathActivity instead of all values individually
             // these always have values within bounds set in the xml
-            breathingIntent.putExtra("inhale", inhaleSlider.getValue());
-            breathingIntent.putExtra("inhale_hold", inhaleHoldSlider.getValue());
-            breathingIntent.putExtra("exhale", exhaleSlider.getValue());
-            breathingIntent.putExtra("exhale_hold", exhaleHoldSlider.getValue());
+            breathSequenceIntent.putExtra("inhale", inhaleSlider.getValue());
+            breathSequenceIntent.putExtra("inhale_hold", inhaleHoldSlider.getValue());
+            breathSequenceIntent.putExtra("exhale", exhaleSlider.getValue());
+            breathSequenceIntent.putExtra("exhale_hold", exhaleHoldSlider.getValue());
 
             // should launching an service be try catch
-            startService(breathingIntent);
+            //
         });
     }
 }
